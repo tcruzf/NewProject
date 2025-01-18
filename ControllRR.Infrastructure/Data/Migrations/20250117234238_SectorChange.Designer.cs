@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ControllRR.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ControllRRContext))]
-    [Migration("20250117230241_MigrateInitial")]
-    partial class MigrateInitial
+    [Migration("20250117234238_SectorChange")]
+    partial class SectorChange
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,6 +41,9 @@ namespace ControllRR.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int>("SectorId")
+                        .HasColumnType("int");
+
                     b.Property<string>("SerialNumber")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -50,6 +53,8 @@ namespace ControllRR.Infrastructure.Data.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SectorId");
 
                     b.ToTable("Devices");
                 });
@@ -106,7 +111,14 @@ namespace ControllRR.Infrastructure.Data.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("DeviceId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Maintenances");
                 });
@@ -190,6 +202,46 @@ namespace ControllRR.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ControllRR.Domain.Entities.Device", b =>
+                {
+                    b.HasOne("ControllRR.Domain.Entities.Sector", "Sector")
+                        .WithMany("Devices")
+                        .HasForeignKey("SectorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Sector");
+                });
+
+            modelBuilder.Entity("ControllRR.Domain.Entities.Maintenance", b =>
+                {
+                    b.HasOne("ControllRR.Domain.Entities.Device", "Device")
+                        .WithMany("Maintenances")
+                        .HasForeignKey("DeviceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ControllRR.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Device");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ControllRR.Domain.Entities.Device", b =>
+                {
+                    b.Navigation("Maintenances");
+                });
+
+            modelBuilder.Entity("ControllRR.Domain.Entities.Sector", b =>
+                {
+                    b.Navigation("Devices");
                 });
 #pragma warning restore 612, 618
         }

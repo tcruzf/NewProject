@@ -19,13 +19,13 @@ public class MaintenancesController : Controller
     private readonly IMaintenanceService _maintenanceService;
     private readonly IUserService _userService;
     private readonly IDeviceService _deviceService;
-    private readonly ControllRRContext _controllRRContext;
+    
     public MaintenancesController(IMaintenanceService maintenanceService, IUserService userService, IDeviceService deviceService, ControllRRContext controllRRContext)
     {
         _maintenanceService = maintenanceService;
         _userService = userService;
         _deviceService = deviceService;
-        _controllRRContext = controllRRContext;
+       
     }
 
     public async Task<IActionResult> Index()
@@ -88,5 +88,7 @@ public class MaintenancesController : Controller
         };
         return View(viewModel);
     }
+
+    
 
 }

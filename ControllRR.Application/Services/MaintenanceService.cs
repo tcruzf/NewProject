@@ -34,18 +34,18 @@ public class MaintenanceService : IMaintenanceService
 
     public async Task RemoveAsync(int id)
     {
-        
+        throw new NotImplementedException();
 
     }
 
     public async Task UpdateAsync(Maintenance maintenance)
     {
-       
+       throw new NotImplementedException();
     }
 
     public async Task FinalizeAsync(int id)
     {
-      
+        throw new NotImplementedException();
     }
 
 }

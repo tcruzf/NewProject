@@ -32,7 +32,7 @@ public class Sector
      [Required(ErrorMessage ="O campo {0} é obrigatorio")]
     public string Cep { get; set; }
 
-   // public ICollection<Device>? Devices {get; set; }
+    public ICollection<Device>? Devices {get; set; }
 
     public Sector()
     {

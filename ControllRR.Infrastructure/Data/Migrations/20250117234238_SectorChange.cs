@@ -7,30 +7,12 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace ControllRR.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class MigrateInitial : Migration
+    public partial class SectorChange : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterDatabase()
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Devices",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Type = table.Column<string>(type: "longtext", nullable: false),
-                    Identifier = table.Column<string>(type: "longtext", nullable: false),
-                    Model = table.Column<string>(type: "longtext", nullable: false),
-                    SerialNumber = table.Column<string>(type: "longtext", nullable: false),
-                    DeviceDescription = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Devices", x => x.Id);
-                })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
@@ -60,26 +42,6 @@ namespace ControllRR.Infrastructure.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MaintenanceNumberControls", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Maintenances",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    SimpleDesc = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
-                    Description = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false),
-                    OpenDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    CloseDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    DeviceId = table.Column<int>(type: "int", nullable: false),
-                    MaintenanceNumber = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Maintenances", x => x.Id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -119,14 +81,84 @@ namespace ControllRR.Infrastructure.Data.Migrations
                     table.PrimaryKey("PK_Users", x => x.Id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Devices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Type = table.Column<string>(type: "longtext", nullable: false),
+                    Identifier = table.Column<string>(type: "longtext", nullable: false),
+                    Model = table.Column<string>(type: "longtext", nullable: false),
+                    SerialNumber = table.Column<string>(type: "longtext", nullable: false),
+                    DeviceDescription = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false),
+                    SectorId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Devices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Devices_Sectors_SectorId",
+                        column: x => x.SectorId,
+                        principalTable: "Sectors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Maintenances",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    SimpleDesc = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
+                    Description = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false),
+                    OpenDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    CloseDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    DeviceId = table.Column<int>(type: "int", nullable: false),
+                    MaintenanceNumber = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Maintenances", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Maintenances_Devices_DeviceId",
+                        column: x => x.DeviceId,
+                        principalTable: "Devices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Maintenances_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Devices_SectorId",
+                table: "Devices",
+                column: "SectorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Maintenances_DeviceId",
+                table: "Maintenances",
+                column: "DeviceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Maintenances_UserId",
+                table: "Maintenances",
+                column: "UserId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Devices");
-
             migrationBuilder.DropTable(
                 name: "Documents");
 
@@ -137,10 +169,13 @@ namespace ControllRR.Infrastructure.Data.Migrations
                 name: "Maintenances");
 
             migrationBuilder.DropTable(
-                name: "Sectors");
+                name: "Devices");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Sectors");
         }
     }
 }

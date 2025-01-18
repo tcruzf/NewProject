@@ -3,8 +3,7 @@
 @{
     ViewData["Title"] = "Criar nova Manutenção";
 }
-
-   <div class="mt-4">
+ <div class="mt-4">
          <a asp-action="Index" class="btn btn-primary">Voltar</a>
     </div>
 <div class="row">
@@ -39,6 +38,15 @@
     <input asp-for="Maintenance.SimpleDesc" class="form-control input-sm" />
     <span asp-validation-for="Maintenance.SimpleDesc" class="text-danger"></span>
     </div> 
+    <div class="col">
+   <label asp-for="Maintenance.User" class="control-label"></label>
+   <select asp-for="Maintenance.UserId" asp-items="@(new SelectList(Model.User, "Id", "Name" ))" class="form-control"></select>
+    </div>
+    <div class="col">
+    <label asp-for="Maintenance.Device" class="control-label"></label>
+    <input id="deviceSearch" class="form-control" placeholder="Procure por modelo, serial ou tipo" />
+    <input type="hidden" id="deviceId" name="Maintenance.DeviceId" />
+    </div>
      <div class="col">
      <label asp-for="Maintenance.Status" class="control-label"></label>
     <select asp-for="Maintenance.Status" class="form-control" asp-items="@Html.GetEnumSelectList<MaintenanceStatus>()"></select>
