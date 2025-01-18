@@ -1,4 +1,6 @@
 
+using AutoMapper;
+using ControllRR.Application.Dto;
 using ControllRR.Application.Interfaces;
 using ControllRR.Domain.Entities;
 using ControllRR.Domain.Interfaces;
@@ -9,27 +11,35 @@ namespace ControllRR.Application.Services;
 public class MaintenanceService : IMaintenanceService
 {
     private readonly IMaintenanceRepository _maintenanceRepository;
+    private readonly IMapper _mapper;
 
-    public MaintenanceService(IMaintenanceRepository maintenanceRepository)
+    public MaintenanceService(IMaintenanceRepository maintenanceRepository, IMapper mapper)
     {
         _maintenanceRepository = maintenanceRepository;
+        _mapper = mapper;
     }
 
-    public async Task<List<Maintenance>> FindAllAsync()
+    public async Task<List<MaintenanceDto>> FindAllAsync()
     {
 
-        return await _maintenanceRepository.FindAllAsync();
+        var maintenance = await _maintenanceRepository.FindAllAsync();
+        return _mapper.Map<List<MaintenanceDto>>(maintenance);
+
     }
 
-    public async Task<Maintenance> FindByIdAsync(int id)
+    public async Task<MaintenanceDto> FindByIdAsync(int id)
     {
-        return await _maintenanceRepository.FindByIdAsync(id);
+        var maintenance = await _maintenanceRepository.FindByIdAsync(id);
+        return _mapper.Map<MaintenanceDto>(maintenance);
+
     }
 
-    public async Task InsertAsync(Maintenance maintenance)
+    public async Task InsertAsync(MaintenanceDto maintenanceDto)
     {
-        _maintenanceRepository.InsertAsync(maintenance);
-        await _maintenanceRepository.SaveChangesAsync();
+        var maintenance = _mapper.Map<Maintenance>(maintenanceDto);
+        
+       await _maintenanceRepository.InsertAsync(maintenance);
+        //await _maintenanceRepository.SaveChangesAsync();
     }
 
     public async Task RemoveAsync(int id)
@@ -38,10 +48,11 @@ public class MaintenanceService : IMaintenanceService
 
     }
 
-    public async Task UpdateAsync(Maintenance maintenance)
+    public async Task UpdateAsync(MaintenanceDto maintenanceDto)
     {
+        var maintenance = _mapper.Map<Maintenance>(maintenanceDto);
        await _maintenanceRepository.UpdateAsync(maintenance);
-       await _maintenanceRepository.SaveChangesAsync();
+       //await _maintenanceRepository.SaveChangesAsync();
     }
 
     public async Task FinalizeAsync(int id)

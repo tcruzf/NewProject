@@ -18,6 +18,7 @@ builder.Services.AddEntityFrameworkMySQL()
         options.UseMySQL(builder.Configuration.GetConnectionString("ControlContext"));
     });
 
+builder.Services.AddAutoMapper(typeof(MaintenanceMappingProfile));
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();

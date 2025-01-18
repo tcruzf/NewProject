@@ -16,7 +16,7 @@
 <div class="card-header text-center bg-dark text-white">
 <div class="row align-items-center">
 <div class="col-md-12">
-<h5>Editar Manutenção:: @Html.DisplayFor(model => model.Maintenance.MaintenanceNumber)</h5>
+<h5>Editar Manutenção:: @Html.DisplayFor(model => model.MaintenanceDto.MaintenanceNumber)</h5>
 </div>
 </div>
 </div>
@@ -26,41 +26,42 @@
 <div class="card-body">
 <div class="row">
 <form asp-controller="Maintenances" asp-action="ChangeMaintenance" method="post">
-    <input type="hidden" asp-for="Maintenance.Id">
+    <input type="hidden" asp-for="MaintenanceDto.Id">
+    <input type="hidden" asp-for="MaintenanceDto.MaintenanceNumber">
     <div class="row">
      <div class="col">
-    <label asp-for="Maintenance.OpenDate"></label>
-    <input asp-for="Maintenance.OpenDate" class="form-control input-sm" readonly />
-    <span asp-validation-for="Maintenance.OpenDate" class="text-danger"></span>
+    <label asp-for="MaintenanceDto.OpenDate"></label>
+    <input asp-for="MaintenanceDto.OpenDate" class="form-control input-sm" readonly />
+    <span asp-validation-for="MaintenanceDto.OpenDate" class="text-danger"></span>
     </div>
     <div class="col">
-    <label asp-for="Maintenance.SimpleDesc"></label>
-    <input asp-for="Maintenance.SimpleDesc" class="form-control input-sm" readonly />
-    <span asp-validation-for="Maintenance.SimpleDesc" class="text-danger"></span>
+    <label asp-for="MaintenanceDto.SimpleDesc"></label>
+    <input asp-for="MaintenanceDto.SimpleDesc" class="form-control input-sm" readonly />
+    <span asp-validation-for="MaintenanceDto.SimpleDesc" class="text-danger"></span>
     </div>
     <div class="col">
-    <label asp-for="Maintenance.CloseDate"></label>
-    <input asp-for="Maintenance.CloseDate" class="form-control input-sm" />
-    <span asp-validation-for="Maintenance.CloseDate" class="text-danger"></span>
+    <label asp-for="MaintenanceDto.CloseDate"></label>
+    <input asp-for="MaintenanceDto.CloseDate" class="form-control input-sm" />
+    <span asp-validation-for="MaintenanceDto.CloseDate" class="text-danger"></span>
     </div> 
     <div class="col">
-   <label asp-for="Maintenance.User" class="control-label"></label>
-   <select asp-for="Maintenance.UserId" asp-items="@(new SelectList(Model.User, "Id", "Name" ))" class="form-control"></select>
+   <label asp-for="MaintenanceDto.User" class="control-label"></label>
+   <select asp-for="MaintenanceDto.UserId" asp-items="@(new SelectList(Model.User, "Id", "Name" ))" class="form-control"></select>
     </div>
      <div class="col">
-    <label asp-for="Maintenance.DeviceId"></label>
-    <input asp-for="Maintenance.DeviceId" class="form-control input-sm"  />
-    <span asp-validation-for="Maintenance.DeviceId" class="text-danger"></span>
+    <label asp-for="MaintenanceDto.DeviceId"></label>
+    <input asp-for="MaintenanceDto.DeviceId" class="form-control input-sm"  />
+    <span asp-validation-for="MaintenanceDto.DeviceId" class="text-danger"></span>
     </div>
     
     <div class="col">
-     <label asp-for="Maintenance.Status" class="control-label"></label>
-    <select asp-for="Maintenance.Status" class="form-control" asp-items="@Html.GetEnumSelectList<MaintenanceStatus>()"></select>
+     <label asp-for="MaintenanceDto.Status" class="control-label"></label>
+    <select asp-for="MaintenanceDto.Status" class="form-control" asp-items="@Html.GetEnumSelectList<MaintenanceStatus>()"></select>
     </div>
    <div class="form-group">
-   <label asp-for="Maintenance.Description"></label>
-    <textarea asp-for="Maintenance.Description" class="form-control" rows="14"></textarea>
-    <span asp-validation-for="Maintenance.Description" class="text-danger"></span>
+   <label asp-for="MaintenanceDto.Description"></label>
+    <textarea asp-for="MaintenanceDto.Description" class="form-control" rows="14"></textarea>
+    <span asp-validation-for="MaintenanceDto.Description" class="text-danger"></span>
   </div>
     </div>
     <div class="mt-4">

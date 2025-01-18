@@ -11,6 +11,7 @@ using ControllRR.Presentation.ViewModels;
 using System.Diagnostics;
 using ControllRR.Domain.Entities;
 using ControllRR.Infrastructure.Exceptions;
+using ControllRR.Application.Dto;
 
 namespace ControlRR.Controllers;
 
@@ -63,19 +64,19 @@ public class MaintenancesController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> New(Maintenance maintenance)
+    public async Task<IActionResult> New(MaintenanceDto maintenanceDto)
     {
         if (!ModelState.IsValid)
         {
             var user = await _userService.FindAllAsync();
             var device = await _deviceService.FindAllAsync();
-            var viewModel = new MaintenanceViewModel { Maintenance = maintenance, User = user, Device = device };
+            var viewModel = new MaintenanceViewModel { MaintenanceDto = maintenanceDto, User = user, Device = device };
 
 
             return View(viewModel);
         }
 
-        await _maintenanceService.InsertAsync(maintenance);
+        await _maintenanceService.InsertAsync(maintenanceDto);
         return RedirectToAction(nameof(Index));
     }
 
@@ -112,24 +113,24 @@ public class MaintenancesController : Controller
         
         var device = await _deviceService.FindByIdAsync(maintenance.Device.Id);
         List<User> users = await _userService.FindAllAsync();
-        MaintenanceViewModel viewModel = new MaintenanceViewModel { User = users, Maintenance = maintenance };
+        MaintenanceViewModel viewModel = new MaintenanceViewModel { User = users, MaintenanceDto = maintenance };
         return View(viewModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ChangeMaintenance(int? id, Maintenance maintenance)
+    public async Task<IActionResult> ChangeMaintenance(int? id, MaintenanceDto maintenanceDto)
     {
-        if (!ModelState.IsValid)
+          if (!ModelState.IsValid)
         {
             List<User> users = await _userService.FindAllAsync();
-            MaintenanceViewModel viewModel = new MaintenanceViewModel { User = users, Maintenance = maintenance };
+            MaintenanceViewModel viewModel = new MaintenanceViewModel { User = users, MaintenanceDto = maintenanceDto };
             return View(viewModel);
         }
-        
+    
         try
         {
-            await _maintenanceService.UpdateAsync(maintenance);
+            await _maintenanceService.UpdateAsync(maintenanceDto);
             return RedirectToAction(nameof(MaintenanceList));
         }
         catch (ApplicationException e)
@@ -195,6 +196,11 @@ public class MaintenancesController : Controller
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
         };
         return View(viewModel);
+    }
+    public void MeuDebug(string xx)
+    {
+         Console.WriteLine(xx);
+         
     }
 
 }

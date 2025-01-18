@@ -21,7 +21,7 @@ public class SeedingService
              {
                 return;
              }
-             Sector s1 = new Sector(1, "Setor 1", "Loc Setor 1", "Av Santos Dumont", "S/N", "Centro", "Janauba", "34201147", "Carlos Rafael");
+                Sector s1 = new Sector(1, "Setor 1", "Loc Setor 1", "Av Santos Dumont", "S/N", "Centro", "Janauba", "34201147", "Carlos Rafael");
                 Sector s2 = new Sector(2, "Setor 2", "Loc Setor 2", "rua F ", "60", "Santana II", "Ouro Preto", "34201147", "Fernanda");
                 Sector s3 = new Sector(3, "Setor 3", "Loc Setor 3", "rua gomes e santos ", "65", "Ouro branco", "Mariana", "34201147", "Maria");
                 Sector s4 = new Sector(4, "Setor 4", "Loc Setor 4", "Rua pedro pereira", "650", "Centro", "São José", "34201147", "JOão pedro");

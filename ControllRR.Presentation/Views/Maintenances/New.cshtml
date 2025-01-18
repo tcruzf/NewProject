@@ -29,32 +29,32 @@
     <div class="row">
     
      <div class="col">
-    <label asp-for="Maintenance.OpenDate"></label>
-    <input asp-for="Maintenance.OpenDate" class="form-control input-sm" />
-    <span asp-validation-for="Maintenance.OpenDate" class="text-danger"></span>
+    <label asp-for="MaintenanceDto.OpenDate"></label>
+    <input asp-for="MaintenanceDto.OpenDate" class="form-control input-sm" />
+    <span asp-validation-for="MaintenanceDto.OpenDate" class="text-danger"></span>
     </div>
     <div class="col">
-    <label asp-for="Maintenance.SimpleDesc"></label>
-    <input asp-for="Maintenance.SimpleDesc" class="form-control input-sm" />
-    <span asp-validation-for="Maintenance.SimpleDesc" class="text-danger"></span>
+    <label asp-for="MaintenanceDto.SimpleDesc"></label>
+    <input asp-for="MaintenanceDto.SimpleDesc" class="form-control input-sm" />
+    <span asp-validation-for="MaintenanceDto.SimpleDesc" class="text-danger"></span>
     </div> 
     <div class="col">
-   <label asp-for="Maintenance.User" class="control-label"></label>
-   <select asp-for="Maintenance.UserId" asp-items="@(new SelectList(Model.User, "Id", "Name" ))" class="form-control"></select>
+   <label asp-for="MaintenanceDto.User" class="control-label"></label>
+   <select asp-for="MaintenanceDto.UserId" asp-items="@(new SelectList(Model.User, "Id", "Name" ))" class="form-control"></select>
     </div>
     <div class="col">
-    <label asp-for="Maintenance.Device" class="control-label"></label>
+    <label asp-for="MaintenanceDto.Device" class="control-label"></label>
     <input id="deviceSearch" class="form-control" placeholder="Procure por modelo, serial ou tipo" />
-    <input type="hidden" id="deviceId" name="Maintenance.DeviceId" />
+    <input type="hidden" id="deviceId" name="MaintenanceDto.DeviceId" />
     </div>
      <div class="col">
-     <label asp-for="Maintenance.Status" class="control-label"></label>
-    <select asp-for="Maintenance.Status" class="form-control" asp-items="@Html.GetEnumSelectList<MaintenanceStatus>()"></select>
+     <label asp-for="MaintenanceDto.Status" class="control-label"></label>
+    <select asp-for="MaintenanceDto.Status" class="form-control" asp-items="@Html.GetEnumSelectList<MaintenanceStatus>()"></select>
     </div
    <div class="form-group">
-   <label asp-for="Maintenance.Description"></label>
-    <textarea asp-for="Maintenance.Description" class="form-control" id="MaintenanceDescription" rows="14"></textarea>
-    <span asp-validation-for="Maintenance.Description" class="text-danger"></span>
+   <label asp-for="MaintenanceDto.Description"></label>
+    <textarea asp-for="MaintenanceDto.Description" class="form-control" id="MaintenanceDescription" rows="14"></textarea>
+    <span asp-validation-for="MaintenanceDto.Description" class="text-danger"></span>
   </div>
     </div>
     <div class="mt-4">
