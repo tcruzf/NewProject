@@ -22,23 +22,23 @@ public class DeviceRepository : IDeviceRepository
     public async Task<List<Device>> FindAllAsync()
     {
         return await _controllRRContext.Devices
-        //.Include(x => x.Sector)
-        //.Include(x => x.Maintenances)
+        .Include(x => x.Sector)
+        .Include(x => x.Maintenances)
         .ToListAsync();
     }
 
     public async Task<Device> FindByIdAsync(int id)
     {
         return await _controllRRContext.Devices
-        //.Include(x => x.Sector)
+        .Include(x => x.Sector)
         .FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<Device> GetMaintenancesAsync(int id)
     {
         return await _controllRRContext.Devices
-        //.Include(x => x.Maintenances)
-        //.Include(x => x.Sector)
+        .Include(x => x.Maintenances)
+        .Include(x => x.Sector)
         .FirstOrDefaultAsync(x => x.Id == id);
     }
 

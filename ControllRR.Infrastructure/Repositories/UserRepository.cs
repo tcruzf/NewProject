@@ -19,7 +19,7 @@ public class UserRepository : IUserRepository
     public async Task<List<User>> FindAllAsync()
     {
       return await _controllRRContext.Users
-      //.Include(x => x.Maintenances)
+      .Include(x => x.Maintenances)
       .ToListAsync();
     }
 
@@ -27,7 +27,7 @@ public class UserRepository : IUserRepository
     {
        
         return await _controllRRContext.Users
-        //.Include(x => x.Maintenances)
+        .Include(x => x.Maintenances)
         .FirstOrDefaultAsync(x => x.Id == id);
        
     }

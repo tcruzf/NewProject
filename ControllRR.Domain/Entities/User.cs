@@ -15,7 +15,7 @@ namespace ControllRR.Domain.Entities;
         public string Phone { get; set; }
         [Display(Name = "Matricula")]
         public double Register { get; set; }
-      //  public ICollection<Maintenance>? Maintenances {get; set; }
+        public ICollection<Maintenance>? Maintenances {get; set; }
 
         public User()
         {

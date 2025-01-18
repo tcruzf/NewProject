@@ -40,7 +40,7 @@ public class MaintenancesController : Controller
         var list = await _maintenanceService.FindByIdAsync(id);
         if (id == null)
         {
-            return RedirectToAction(nameof(Error), new { message = "Identificador não informado!" });
+            return RedirectToAction(nameof(Error), new { message = "ID não pode ser nulo!" });
         }
         if (list == null)
         {
@@ -79,7 +79,30 @@ public class MaintenancesController : Controller
     }
 
 
-    public async Task<IActionResult> Error(string message)
+    
+
+    [HttpGet]
+    public async Task<IActionResult> MaintenanceList()
+    {
+        return View();
+    }
+    [HttpPost]
+    public async Task<JsonResult> AllMaintenances()
+    {
+        var draw = Request.Form["draw"].FirstOrDefault();
+        var start = Convert.ToInt32(Request.Form["start"].FirstOrDefault() ?? "0");
+        var length = Convert.ToInt32(Request.Form["length"].FirstOrDefault() ?? "10");
+        var searchValue = Request.Form["search[value]"].FirstOrDefault()?.ToLower();
+        var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"] + "][data]"].FirstOrDefault();
+        var sortDirection = Request.Form["order[0][dir]"].FirstOrDefault();
+
+        var result = await _maintenanceService.GetMaintenanceDataTableAsync(
+            start, length, searchValue, sortColumn, sortDirection);
+
+        return Json(result);
+    } // Fim do método
+
+     public async Task<IActionResult> Error(string message)
     {
         var viewModel = new ErrorViewModel
         {
@@ -88,7 +111,5 @@ public class MaintenancesController : Controller
         };
         return View(viewModel);
     }
-
-    
 
 }

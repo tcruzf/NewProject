@@ -23,7 +23,7 @@ public class DeviceService : IDeviceService
 
     public async Task<Device> GetMaintenancesAsync(int id)
     {
-        throw new NotImplementedException();
+        return await _deviceRepository.GetMaintenancesAsync(id);
     }
  
     public async Task InsertAsync(Device device)

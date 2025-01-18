@@ -20,7 +20,7 @@ public class SectorRepository : ISectorRepository
     public async Task<List<Sector>> FindAllAsync()
     {
         return await _controllRRContext.Sectors
-        //.Include(x => x.Devices)
+        .Include(x => x.Devices)
         .ToListAsync();
     }
 
@@ -33,7 +33,7 @@ public class SectorRepository : ISectorRepository
     public async Task<Sector> FindByIdAsync(int id)
     {
         return await _controllRRContext.Sectors
-        //.Include(x => x.Devices)
+        .Include(x => x.Devices)
         .FirstOrDefaultAsync(x => x.Id == id);
     }
 

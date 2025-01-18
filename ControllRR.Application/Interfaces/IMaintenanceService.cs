@@ -9,4 +9,9 @@ public interface IMaintenanceService
     Task RemoveAsync(int id);
     Task UpdateAsync(Maintenance maintenance);
     Task FinalizeAsync(int id);
+      Task<object> GetMaintenanceDataTableAsync( int start,
+    int length,
+    string searchValue,
+    string sortColumn,
+    string sortDirection);
 }

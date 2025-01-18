@@ -130,7 +130,7 @@ public class DevicesController : Controller
         }
         if (device == null)
         {
-            return RedirectToAction(nameof(Error), new { message = "Identificador não encontrado!" });
+            return RedirectToAction(nameof(Error), new { message = "Identificador não encontrado (xmERR)!" });
         }
         return View(device);
     }
@@ -144,7 +144,7 @@ public class DevicesController : Controller
         }
         if (device == null)
         {
-            return RedirectToAction(nameof(Error), new { message = "Dispositivo não encontrado!" });
+            return RedirectToAction(nameof(Error), new { message = "Dispositivo não encontrado @!" });
         }
         return View(device);
 
@@ -190,7 +190,7 @@ public class DevicesController : Controller
         var device = await _deviceService.FindByIdAsync(id.Value);
         if (device == null)
         {
-            return RedirectToAction(nameof(Error), new { message = "Dispositivo não encontrado" });
+            return RedirectToAction(nameof(Error), new { message = "Dispositivo não encontrado - Erro" });
         }
 
         List<Sector> sector = await _sectorService.FindAllAsync();
