@@ -142,7 +142,7 @@ public class MaintenanceRepository : IMaintenanceRepository
                 User = x.User.Name,
                 Identifier = x.Device.Identifier,
                 SerialNumber = x.Device.SerialNumber,
-                DeviceId = x.DeviceId
+                DeviceId = x.DeviceId//
             })
             .ToListAsync();
 
@@ -150,10 +150,13 @@ public class MaintenanceRepository : IMaintenanceRepository
 
         return (data, totalRecords, filteredCount);
     }
+    
 
+    
     public async Task SaveChangesAsync()
     {
         await _controllRRContext.SaveChangesAsync();
     }
+
 
 }

@@ -10,6 +10,7 @@ using ControllRR.Infrastructure.Data.Context;
 using ControllRR.Presentation.ViewModels;
 using System.Diagnostics;
 using ControllRR.Domain.Entities;
+using ControllRR.Infrastructure.Exceptions;
 
 namespace ControlRR.Controllers;
 
@@ -19,13 +20,13 @@ public class MaintenancesController : Controller
     private readonly IMaintenanceService _maintenanceService;
     private readonly IUserService _userService;
     private readonly IDeviceService _deviceService;
-    
+
     public MaintenancesController(IMaintenanceService maintenanceService, IUserService userService, IDeviceService deviceService, ControllRRContext controllRRContext)
     {
         _maintenanceService = maintenanceService;
         _userService = userService;
         _deviceService = deviceService;
-       
+
     }
 
     public async Task<IActionResult> Index()
@@ -79,7 +80,7 @@ public class MaintenancesController : Controller
     }
 
 
-    
+
 
     [HttpGet]
     public async Task<IActionResult> MaintenanceList()
@@ -102,7 +103,91 @@ public class MaintenancesController : Controller
         return Json(result);
     } // Fim do método
 
-     public async Task<IActionResult> Error(string message)
+    [HttpGet]
+    public async Task<IActionResult> ChangeMaintenance(int? id)
+    {
+       
+        var maintenance = await _maintenanceService.FindByIdAsync(id.Value);
+       
+        
+        var device = await _deviceService.FindByIdAsync(maintenance.Device.Id);
+        List<User> users = await _userService.FindAllAsync();
+        MaintenanceViewModel viewModel = new MaintenanceViewModel { User = users, Maintenance = maintenance };
+        return View(viewModel);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ChangeMaintenance(int? id, Maintenance maintenance)
+    {
+        if (!ModelState.IsValid)
+        {
+            List<User> users = await _userService.FindAllAsync();
+            MaintenanceViewModel viewModel = new MaintenanceViewModel { User = users, Maintenance = maintenance };
+            return View(viewModel);
+        }
+        
+        try
+        {
+            await _maintenanceService.UpdateAsync(maintenance);
+            return RedirectToAction(nameof(MaintenanceList));
+        }
+        catch (ApplicationException e)
+        {
+            return RedirectToAction(nameof(Error), new { message = e.Message });
+        }
+
+    }
+
+
+    public async Task<IActionResult> Print(int id)
+    {
+        var list = await _maintenanceService.FindByIdAsync(id);
+        if (id == null)
+        {
+            return RedirectToAction(nameof(Error), new { message = "Não foi possivel determinar a Ordem de serviço para impressão" });
+        }
+        if (list == null)
+        {
+            return RedirectToAction(nameof(Error), new { message = "A ordem de serviço não existe ou existe um erro na consulta" });
+        }
+
+        return View(list);
+    }
+
+    public async Task<IActionResult> Finalize(int id)
+    {
+        try
+        {
+            var maintenance = await _maintenanceService.FindByIdAsync(id);
+            if (maintenance == null)
+            {
+                return RedirectToAction(nameof(Error), new { message = "Manuteção não encontrada! Impossivel Finalizar uma manutenção inexistente!" });
+            }
+            await _maintenanceService.FinalizeAsync(id);
+            return RedirectToAction(nameof(Index));
+
+        }
+        catch (ApplicationException e)
+        {
+            return RedirectToAction(nameof(Error), new { e.Message });
+        }
+    }
+
+    public async Task<IActionResult> Delete(int id)
+    {
+        try
+        {
+            await _maintenanceService.RemoveAsync(id);
+            return RedirectToAction(nameof(Index));
+        }
+        catch (IntegrityException e)
+        {
+            return RedirectToAction(nameof(Error), new { message = e.Message });
+        }
+    }
+
+    public async Task<IActionResult> Error(string message)
     {
         var viewModel = new ErrorViewModel
         {

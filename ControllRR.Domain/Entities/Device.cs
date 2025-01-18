@@ -21,7 +21,7 @@ public class Device
     [Display(Name = "Descrição")]
     [Required(ErrorMessage = "O campo {0} é obrigatorio!")]
     [StringLength(300, MinimumLength = 0, ErrorMessage = "{0} Deve ter entre {2} e {1} caracteres")]
-    public string DeviceDescription { get; set; }
+    public string? DeviceDescription { get; set; }
 
     public int SectorId { get; set; }
     [Display(Name = "Setor")]

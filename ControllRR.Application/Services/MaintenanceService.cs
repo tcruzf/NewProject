@@ -34,18 +34,20 @@ public class MaintenanceService : IMaintenanceService
 
     public async Task RemoveAsync(int id)
     {
-        throw new NotImplementedException();
+        await _maintenanceRepository.RemoveAsync(id);
 
     }
 
     public async Task UpdateAsync(Maintenance maintenance)
     {
-        throw new NotImplementedException();
+       await _maintenanceRepository.UpdateAsync(maintenance);
+       await _maintenanceRepository.SaveChangesAsync();
     }
 
     public async Task FinalizeAsync(int id)
     {
-        throw new NotImplementedException();
+      await  _maintenanceRepository.FinalizeAsync(id);
+
     }
 
     public async Task<object> GetMaintenanceDataTableAsync(

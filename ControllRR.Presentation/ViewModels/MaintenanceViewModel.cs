@@ -7,6 +7,6 @@ public class MaintenanceViewModel
 {
     public Maintenance Maintenance { get; set; }
     public ICollection<User> User { get; set; }
-    public ICollection<Device> Device { get; set; }
+    public ICollection<Device>? Device { get; set; }
 
 }
