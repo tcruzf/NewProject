@@ -20,6 +20,7 @@ namespace ControllRR.Infrastructure.Data.Context;
         public virtual DbSet<Sector> Sectors { get; set;}
         public virtual DbSet<Document> Documents { get; set;}
         public virtual DbSet<MaintenanceNumberControl> MaintenanceNumberControls{ get; set; }
+        
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

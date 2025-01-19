@@ -6,6 +6,7 @@ using ControllRR.Presentation.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
+using ControllRR.Application.Dto;
 
 
 namespace ControlRR.Controllers;
@@ -39,67 +40,17 @@ public class DevicesController : Controller
     [HttpPost]
     public async Task<JsonResult> GetList()
     {
-        var draw = Request.Form["draw"].FirstOrDefault();
+      var draw = Request.Form["draw"].FirstOrDefault();
         var start = Convert.ToInt32(Request.Form["start"].FirstOrDefault() ?? "0");
         var length = Convert.ToInt32(Request.Form["length"].FirstOrDefault() ?? "10");
         var searchValue = Request.Form["search[value]"].FirstOrDefault()?.ToLower();
         var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"] + "][data]"].FirstOrDefault();
         var sortDirection = Request.Form["order[0][dir]"].FirstOrDefault();
 
-        // Obter a consulta base diretamente do contexto
-        var dataQuery = _controllRRContext.Devices.Include(x => x.Sector).AsQueryable();
+        var result = await _deviceService.GetDeviceAsync(
+            start, length, searchValue, sortColumn, sortDirection);
 
-        // Filtragem
-        if (!string.IsNullOrEmpty(searchValue))
-        {
-            dataQuery = dataQuery.Where(x =>
-                x.Id != null && x.Id.ToString().Contains(searchValue) ||
-                x.SerialNumber != null && x.SerialNumber.ToLower().Contains(searchValue) ||
-                x.Sector != null && x.Sector.Name.ToLower().Contains(searchValue) ||
-                x.Type != null && x.Type.ToLower().Contains(searchValue) ||
-                x.Identifier != null && x.Identifier.ToLower().Contains(searchValue) ||
-                x.Model != null && x.Model.ToLower().Contains(searchValue));
-            // return Json(dataQuery);
-        }
-        // Ordenação
-        if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
-        {
-            dataQuery = dataQuery.OrderBy($"{sortColumn} {sortDirection}");
-        }
-        else
-        {
-            // Ordenação padrão (caso nenhuma seja fornecida)
-            dataQuery = dataQuery.OrderBy(x => x.Id);
-        }
-
-        // Contagem total após filtro
-        var filteredCount = await dataQuery.CountAsync();
-
-        // Paginação
-        //var data = await dataQuery.Skip(start).Take(length).ToListAsync();
-        var data = await dataQuery
-        .Skip(start)
-        .Take(length)
-        .Select(x => new
-        {
-            Id = x.Id,
-            Type = x.Type,
-            Identifier = x.Identifier,
-            Model = x.Model,
-            SerialNumber = x.SerialNumber,
-            Sector = x.Sector != null ? x.Sector.Name : null,
-            Description = x.DeviceDescription
-        })
-        .ToListAsync();
-
-        // Montar o JSON de retorno
-        return Json(new
-        {
-            draw,
-            recordsFiltered = filteredCount,
-            recordsTotal = await _controllRRContext.Devices.CountAsync(),
-            data
-        });
+        return Json(result);
     }// End GetList
 
    
@@ -135,9 +86,18 @@ public class DevicesController : Controller
         return View(device);
     }
     
+    [HttpGet]
     public async Task<IActionResult> GetMaintenances(int id)
     {
+
         var device = await _deviceService.GetMaintenancesAsync(id);
+       
+       
+        if(device == null)
+        {
+            System.Console.WriteLine("Device é null aqui!");
+        }
+        System.Console.WriteLine(device);
         if (id == null)
         {
             return RedirectToAction(nameof(Error), new { message = "Id não fornecido!" });
@@ -151,7 +111,7 @@ public class DevicesController : Controller
     }
     
     [HttpGet]
-    public async Task<IActionResult> New()
+    public async Task<IActionResult> CreateNew()
     {
         var sectors = await _sectorService.FindAllAsync();
         var viewModel = new DeviceViewModel { Sector = sectors };
@@ -161,9 +121,9 @@ public class DevicesController : Controller
    
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> New(Device device)
+    public async Task<IActionResult> CreateNew(DeviceDto deviceDto)
     {
-        System.Console.WriteLine(device);
+        System.Console.WriteLine(deviceDto);
         if (!ModelState.IsValid)
         {
 
@@ -175,7 +135,7 @@ public class DevicesController : Controller
             // Printar System.Console.WriteLine(viewModel);
             return View(viewModel);
         }
-        await _deviceService.InsertAsync(device);
+        await _deviceService.InsertAsync(deviceDto);
         return RedirectToAction(nameof(Index));
 
     }
@@ -194,27 +154,27 @@ public class DevicesController : Controller
         }
 
         List<Sector> sector = await _sectorService.FindAllAsync();
-        DeviceViewModel viewModel = new DeviceViewModel { Sector = sector, Device = device };
+        DeviceViewModel viewModel = new DeviceViewModel { Sector = sector, DeviceDto = device };
         return View(viewModel);
     }
    
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? id, Device device)
+    public async Task<IActionResult> Edit(int? id, DeviceDto deviceDto)
     {
         if (!ModelState.IsValid)
         {
             List<Sector> sector = await _sectorService.FindAllAsync();
-            var viewModel = new DeviceViewModel { Device = device, Sector = sector };
+            var viewModel = new DeviceViewModel { DeviceDto = deviceDto, Sector = sector };
             return View(viewModel);
         }
-        if (id != device.Id)
+        if (id != deviceDto.Id)
         {
             return RedirectToAction(nameof(Error), new { message = "Id fornecido não corresponde ao id do dispositivo!" });
         }
         try
         {
-            _deviceService.UpdateAsync(device);
+            _deviceService.UpdateAsync(deviceDto);
             return RedirectToAction(nameof(Index));
         }
         catch (ApplicationException e)

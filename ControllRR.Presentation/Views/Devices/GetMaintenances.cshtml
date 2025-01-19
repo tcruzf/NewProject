@@ -1,4 +1,4 @@
-@model ControllRR.Domain.Entities.Device;
+@model ControllRR.Application.Dto.DeviceDto;
 @{
     ViewData["Title"]="Lista de ordem de serviço por equipamentos";
 }
@@ -7,7 +7,8 @@
 <p>
     <strong>Patrimonio:</strong> @Model.Identifier<br />
     <strong>Setor:</strong> @Model.Sector.Name<br />
-    <strong>Modelo:</strong> @Model.Model
+    <strong>Modelo:</strong> @Model.Model</br>
+    
     <hr>
   
 </p>

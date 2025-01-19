@@ -4,7 +4,7 @@ namespace ControllRR.Application.Interfaces;
 
 public interface IUserService
 {
-     Task<List<User>> FindAllAsync();
-    Task<User> FindByIdAsync(int id);
-    Task InsertAsync(User user);
+     Task<List<UserDto>> FindAllAsync();
+    Task<UserDto> FindByIdAsync(int id);
+    Task InsertAsync(UserDto user);
 }

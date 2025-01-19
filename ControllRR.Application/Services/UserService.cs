@@ -1,3 +1,4 @@
+using AutoMapper;
 using ControllRR.Application.Interfaces;
 using ControllRR.Domain.Entities;
 using ControllRR.Domain.Interfaces;
@@ -7,26 +8,34 @@ namespace ControllRR.Application.Services;
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
+    private readonly IMapper _mapper;
 
-    public UserService(IUserRepository userRepository )
+    public UserService(IUserRepository userRepository, IMapper mapper)
     {
         _userRepository = userRepository;
+        _mapper = mapper;
     }
-    public async Task<List<User>> FindAllAsync()
+    public async Task<List<UserDto>> FindAllAsync()
     {
-        return await _userRepository.FindAllAsync();
+        var user = await  _userRepository.FindAllAsync();
+        return _mapper.Map<List<UserDto>>(user);
+
     }
 
-    public async Task<User> FindByIdAsync(int id)
+    public async Task<UserDto> FindByIdAsync(int id)
     {
        
-        return await _userRepository.FindByIdAsync(id);
+        var user = await _userRepository.FindByIdAsync(id);
+        return _mapper.Map<UserDto>(user);
+        
        
     }
 
-    public async Task InsertAsync(User user)
+    public async Task InsertAsync(UserDto userDto)
     {
-        _userRepository.InsertAsync(user);
+        var user = _mapper.Map<User>(userDto);
+
+       await _userRepository.InsertAsync(user);
         await _userRepository.SaveChangesAsync();
 
         

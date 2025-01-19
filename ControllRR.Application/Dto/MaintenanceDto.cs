@@ -27,9 +27,9 @@ public class MaintenanceDto
     public MaintenanceStatus Status { get; set; }
     public int UserId { get; set; }
     [Display(Name = "Usuario")]
-    public User? User { get; set; }
+    public UserDto? User { get; set; }
     [Display(Name = "Dispositivo")]
-    public Device? Device { get; set; }
+    public DeviceDto? Device { get; set; }
     public int DeviceId { get; set; }
     [Display(Name = "Dispositivo")]
     public int MaintenanceNumber { get; set; }

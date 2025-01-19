@@ -40,7 +40,7 @@
     </div> 
     <div class="col">
    <label asp-for="MaintenanceDto.User" class="control-label"></label>
-   <select asp-for="MaintenanceDto.UserId" asp-items="@(new SelectList(Model.User, "Id", "Name" ))" class="form-control"></select>
+   <select asp-for="MaintenanceDto.UserId" asp-items="@(new SelectList(Model.UserDto, "Id", "Name" ))" class="form-control"></select>
     </div>
     <div class="col">
     <label asp-for="MaintenanceDto.Device" class="control-label"></label>
@@ -101,7 +101,7 @@ alert('Invalid ID');
                         data: { term: request.term },
                         success: function (data) {
                             response(data.map(device => ({
-                                label: `${device.model} (${device.serialNumber}) - ${device.type}`,
+                                label: `${device.model} (${device.serialNumber}) - ${device.identifier}`,
                                 value: device.id
                             })));
                         }

@@ -56,8 +56,28 @@ public class MaintenancesController : Controller
     {
 
         var users = await _userService.FindAllAsync();
+        var userDto = users.Select(u => new UserDto
+        {
+            Id = u.Id,
+            Name = u.Name,
+            Phone = u.Phone,
+            Register = u.Register
+
+        }).ToList();
+
         var device = await _deviceService.FindAllAsync();
-        var viewModel = new MaintenanceViewModel { User = users, Device = device };
+        var deviceDto = device.Select(d => new DeviceDto
+        {
+            Id = d.Id,
+            Type = d.Type,
+            Identifier = d.Identifier,
+            Model = d.Model,
+            SerialNumber = d.SerialNumber,
+            DeviceDescription = d.DeviceDescription,
+            SectorId = d.SectorId
+        });
+
+        var viewModel = new MaintenanceViewModel { UserDto = userDto, DeviceDto = device };
         return View(viewModel);
 
     }
@@ -68,19 +88,28 @@ public class MaintenancesController : Controller
     {
         if (!ModelState.IsValid)
         {
+
+
             var user = await _userService.FindAllAsync();
+            var userDto = user.Select(u => new UserDto
+            {
+                Id = u.Id,
+                Name = u.Name,
+                Phone = u.Phone,
+                Register = u.Register
+
+            }).ToList();
             var device = await _deviceService.FindAllAsync();
-            var viewModel = new MaintenanceViewModel { MaintenanceDto = maintenanceDto, User = user, Device = device };
+            var viewModel = new MaintenanceViewModel { MaintenanceDto = maintenanceDto, UserDto = userDto, DeviceDto = device };
 
 
             return View(viewModel);
         }
 
+
         await _maintenanceService.InsertAsync(maintenanceDto);
         return RedirectToAction(nameof(Index));
     }
-
-
 
 
     [HttpGet]
@@ -89,7 +118,7 @@ public class MaintenancesController : Controller
         return View();
     }
     [HttpPost]
-    public async Task<JsonResult> AllMaintenances()
+    public async Task<JsonResult> AllMaintenances()//
     {
         var draw = Request.Form["draw"].FirstOrDefault();
         var start = Convert.ToInt32(Request.Form["start"].FirstOrDefault() ?? "0");
@@ -107,13 +136,21 @@ public class MaintenancesController : Controller
     [HttpGet]
     public async Task<IActionResult> ChangeMaintenance(int? id)
     {
-       
+
         var maintenance = await _maintenanceService.FindByIdAsync(id.Value);
-       
-        
+
+
         var device = await _deviceService.FindByIdAsync(maintenance.Device.Id);
-        List<User> users = await _userService.FindAllAsync();
-        MaintenanceViewModel viewModel = new MaintenanceViewModel { User = users, MaintenanceDto = maintenance };
+        var users = await _userService.FindAllAsync();
+        var userDto = users.Select(u => new UserDto
+        {
+            Id = u.Id,
+            Name = u.Name,
+            Phone = u.Phone,
+            Register = u.Register
+
+        }).ToList();
+        MaintenanceViewModel viewModel = new MaintenanceViewModel { UserDto = userDto, MaintenanceDto = maintenance };
         return View(viewModel);
     }
 
@@ -121,13 +158,22 @@ public class MaintenancesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ChangeMaintenance(int? id, MaintenanceDto maintenanceDto)
     {
-          if (!ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            List<User> users = await _userService.FindAllAsync();
-            MaintenanceViewModel viewModel = new MaintenanceViewModel { User = users, MaintenanceDto = maintenanceDto };
+            var users = await _userService.FindAllAsync();
+            var userDto = users.Select(u => new UserDto
+            {
+                Id = u.Id,
+                Name = u.Name,
+                Phone = u.Phone,
+                Register = u.Register
+
+            }).ToList();
+
+            MaintenanceViewModel viewModel = new MaintenanceViewModel { UserDto = userDto, MaintenanceDto = maintenanceDto };
             return View(viewModel);
         }
-    
+
         try
         {
             await _maintenanceService.UpdateAsync(maintenanceDto);
@@ -199,8 +245,8 @@ public class MaintenancesController : Controller
     }
     public void MeuDebug(string xx)
     {
-         Console.WriteLine(xx);
-         
+        Console.WriteLine(xx);
+
     }
 
 }

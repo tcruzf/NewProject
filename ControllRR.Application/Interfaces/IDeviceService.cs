@@ -1,14 +1,20 @@
+using ControllRR.Application.Dto;
 using ControllRR.Domain.Entities;
 
 namespace ControllRR.Application.Interfaces;
 
 public interface IDeviceService
 {
-     Task<List<Device>> FindAllAsync();
-     Task<Device> FindByIdAsync(int id);
-     Task InsertAsync(Device device);
-     Task UpdateAsync(Device device);
+     Task<List<DeviceDto>> FindAllAsync();
+     Task<DeviceDto> FindByIdAsync(int id);
+     Task InsertAsync(DeviceDto device);
+     Task UpdateAsync(DeviceDto device);
 
-     Task<Device> GetMaintenancesAsync(int id);
+     Task<DeviceDto> GetMaintenancesAsync(int id);
+      Task<object> GetDeviceAsync( int start,
+    int length,
+    string searchValue,
+    string sortColumn,
+    string sortDirection);
 
 }

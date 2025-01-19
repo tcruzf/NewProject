@@ -4,6 +4,7 @@ using ControllRR.Domain.Interfaces;
 using ControllRR.Infrastructure.Data.Context;
 using ControllRR.Infrastructure.Data.Seeding;
 using ControllRR.Infrastructure.Repositories;
+using ControllRR.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,9 @@ builder.Services.AddEntityFrameworkMySQL()
     });
 
 builder.Services.AddAutoMapper(typeof(MaintenanceMappingProfile));
+builder.Services.AddAutoMapper(typeof(DeviceMappingProfile));
+builder.Services.AddAutoMapper(typeof(SectorMappingProfile));
+builder.Services.AddAutoMapper(typeof(DocumentMappingProfile));
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -28,7 +32,7 @@ builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
 builder.Services.AddScoped<IDeviceService, DeviceService>();
 builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
 builder.Services.AddScoped<IDocumentService, DocumentService>();
-//builder.Services.AddScoped<IFileStorageService, FileStorageService>();
+builder.Services.AddScoped<IFileStorageService, FileStorageService>();
 builder.Services.AddScoped<ISectorService, SectorService>();
 builder.Services.AddScoped<ISectorRepository, SectorRepository>();
 
