@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ControllRR.Domain.Entities;
 
-    public class User
+    public class User 
     {
         public int Id { get; set; }
         [Display(Name="Nome")]

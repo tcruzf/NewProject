@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using ControllRR.Presentation.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ControllRR.Presentation.Controllers;
 
@@ -13,6 +14,7 @@ public class HomeController : Controller
         _logger = logger;
     }
 
+    [Authorize]
     public IActionResult Index()
     {
         return View();

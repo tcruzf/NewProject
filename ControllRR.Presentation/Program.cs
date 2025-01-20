@@ -9,7 +9,8 @@ using Microsoft.EntityFrameworkCore;
 
 using Microsoft.EntityFrameworkCore;
 using MySql.EntityFrameworkCore.Extensions;
-
+using Microsoft.AspNetCore.Identity;
+using ControllRR.Domain.Entities;
 var builder = WebApplication.CreateBuilder(args);
 
 // Adicionar o DbContext com MySQL
@@ -19,11 +20,18 @@ builder.Services.AddEntityFrameworkMySQL()
         options.UseMySQL(builder.Configuration.GetConnectionString("ControlContext"));
     });
 
+// Configurar o Identity
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<ControllRRContext>()
+    .AddDefaultTokenProviders()
+    .AddDefaultUI();
+// Configurar AutoMapper
 builder.Services.AddAutoMapper(typeof(MaintenanceMappingProfile));
 builder.Services.AddAutoMapper(typeof(DeviceMappingProfile));
 builder.Services.AddAutoMapper(typeof(SectorMappingProfile));
 builder.Services.AddAutoMapper(typeof(DocumentMappingProfile));
 
+// Registrar serviços
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMaintenanceService, MaintenanceService>();
@@ -36,7 +44,7 @@ builder.Services.AddScoped<IFileStorageService, FileStorageService>();
 builder.Services.AddScoped<ISectorService, SectorService>();
 builder.Services.AddScoped<ISectorRepository, SectorRepository>();
 
-// Add services to the container.
+// Adicionar suporte ao MVC e Razor Pages
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -59,10 +67,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication(); 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+    endpoints.MapRazorPages();//ADD THIS LINE
+});
 app.Run();

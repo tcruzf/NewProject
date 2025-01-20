@@ -57,17 +57,8 @@ public class DevicesController : Controller
     [HttpGet]
     public async Task<IActionResult> Search(string term)
     {
-        if (string.IsNullOrWhiteSpace(term))
-        {
-            return Json(new List<object>());
-        }
-
-        var devices = await _controllRRContext.Devices
-            .Where(d => d.Model.Contains(term) || d.SerialNumber.Contains(term) || d.Type.Contains(term) || d.Identifier.Contains(term))
-            .Select(d => new { d.Id, d.Model, d.SerialNumber, d.Type, d.Identifier })
-            .ToListAsync();
-
-        return Json(devices);
+        throw new NotImplementedException();
+    
     }
 
    
