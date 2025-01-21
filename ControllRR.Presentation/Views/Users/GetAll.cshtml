@@ -9,7 +9,7 @@
          <a asp-action="CreateNewUser" class="btn btn-primary">Novo</a>
        
     </div>
-<div class="row">
+<!--<div class="row">
     <div class="col-md-6">
         <form class="form-horizontal" asp-action="FindUserName">
             <fieldset>
@@ -28,7 +28,19 @@
             </fieldset>
         </form>
     </div>
-</div>
+</div> -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
      <div class="card mt-4">
         <div class="card-header">
          Lista de Usuarios

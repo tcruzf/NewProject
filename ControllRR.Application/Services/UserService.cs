@@ -3,6 +3,7 @@ using ControllRR.Application.Interfaces;
 using ControllRR.Domain.Entities;
 using ControllRR.Domain.Interfaces;
 using ControllRR.Application.Dto;
+using ControllRR.Application.Exceptions;
 
 namespace ControllRR.Application.Services;
 
@@ -37,15 +38,24 @@ public class UserService : IUserService
         var user = _mapper.Map<User>(userDto);
 
        await _userRepository.InsertAsync(user);
-        await _userRepository.SaveChangesAsync();
-
-        
-
+       await _userRepository.SaveChangesAsync();
     }
+
 
     public async Task RemoveAsync(int id)
     {
-       await _userRepository.RemoveAsync(id);
+       var obj = await _userRepository.FindByIdAsync(id);
+
+         if(obj == null)
+        {   
+            throw new NotFoundException("Usuario não encontrado");
+        }
+
+        if(obj.Maintenances != null && obj.Maintenances.Any())
+        {
+            throw new InvalidOperationException("Não é possivel remover usuario que tenha manutenções registradas!");
+        }
+
       // await _userRepository.SaveChangesAsync();
 
     }

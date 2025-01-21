@@ -37,41 +37,56 @@ public class UsersController : Controller
     {
         return View();
     }
-    
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateNewUser(UserDto userDto)
     {
-        if(!ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
             return View(userDto);
         }
-
+        try{
         await _userService.InsertAsync(userDto);
+         TempData["SuccessMessage"] = "Usuário Inserido com sucesso.";
+        }
+        catch (Exception ex)
+        {
+            TempData["ErrorMessage"] = ex.Message;
+        }
         return RedirectToAction(nameof(GetAll));
-        
+
     }
-    
-   
+
+
     public async Task<IActionResult> RemoveUser(int id)
     {
-        if(!User.Identity.IsAuthenticated)
+        if (!User.Identity.IsAuthenticated)
         {
-            return RedirectToAction(nameof(Error), new { message = "Você não tem permissão para deletar um usuario"} );
+            return RedirectToAction(nameof(Error), new { message = "Você não tem permissão para deletar um usuario" });
         }
         try
         {
-          await _userService.RemoveAsync(id);
-          return RedirectToAction(nameof(GetAll));
+            await _userService.RemoveAsync(id);
+            TempData["SuccessMessage"] = "Usuário excluído com sucesso.";
         }
-        catch (IntegrityException e)
+        catch (NotFoundException ex)
         {
-            return RedirectToAction(nameof(Error), new { message = e.Message});
+            TempData["ErrorMessage"] = ex.Message;
         }
+        catch (InvalidOperationException ex)
+        {
+            TempData["ErrorMessage"] = ex.Message;
+        }
+        catch (Exception ex)
+        {
+            TempData["ErrorMessage"] = "Ocorreu um erro inesperado ao tentar excluir o usuário.";
+        }
+        return RedirectToAction("GetAll");
 
     }
 
-     public async Task<IActionResult> Error(string message)
+    public async Task<IActionResult> Error(string message)
     {
         var viewModel = new ErrorViewModel
         {
