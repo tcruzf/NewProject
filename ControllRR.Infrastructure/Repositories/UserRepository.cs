@@ -39,6 +39,14 @@ public class UserRepository : IUserRepository
 
     }
 
+    public async Task RemoveAsync(int id)
+    {
+        var obj = await _controllRRContext.Users.FindAsync(id);
+        _controllRRContext.Remove(obj);
+        await _controllRRContext.SaveChangesAsync();
+
+    }
+
       public async Task SaveChangesAsync()
     {
         await _controllRRContext.SaveChangesAsync();

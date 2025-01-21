@@ -2,6 +2,7 @@ using AutoMapper;
 using ControllRR.Application.Interfaces;
 using ControllRR.Domain.Entities;
 using ControllRR.Domain.Interfaces;
+using ControllRR.Application.Dto;
 
 namespace ControllRR.Application.Services;
 
@@ -39,6 +40,13 @@ public class UserService : IUserService
         await _userRepository.SaveChangesAsync();
 
         
+
+    }
+
+    public async Task RemoveAsync(int id)
+    {
+       await _userRepository.RemoveAsync(id);
+      // await _userRepository.SaveChangesAsync();
 
     }
 

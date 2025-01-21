@@ -128,7 +128,7 @@ namespace ControllRR.Presentation.Areas.Identity.Pages.Account.Manage
                 await _emailSender.SendEmailAsync(
                     Input.NewEmail,
                     "Confirme seu e-mail",
-                    $"Por favor, confirme seu email <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicando aqui</a>.");
+                    $"Por favor, confirme seu email <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicando aqui </a>.");
 
                 StatusMessage = "Link de confirmação enviado! Por favor, verifique seu e-mail!";
                 return RedirectToPage();

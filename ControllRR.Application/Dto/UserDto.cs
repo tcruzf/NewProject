@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using ControllRR.Application.Dto;
 
+namespace ControllRR.Application.Dto;
+
 public class UserDto
 {
     public int Id { get; set; }

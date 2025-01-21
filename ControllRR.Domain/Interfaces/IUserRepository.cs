@@ -9,4 +9,5 @@ public interface IUserRepository
     Task InsertAsync(User user);
 
      Task SaveChangesAsync();
+      Task RemoveAsync(int id);
 }

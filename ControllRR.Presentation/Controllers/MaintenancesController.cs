@@ -13,7 +13,7 @@ using ControllRR.Domain.Entities;
 using ControllRR.Infrastructure.Exceptions;
 using ControllRR.Application.Dto;
 
-namespace ControlRR.Controllers;
+namespace ControllRR.Presentation.Controllers;
 
 public class MaintenancesController : Controller
 {
