@@ -39,7 +39,7 @@
         @foreach (var maintenance in Model.Maintenances)
         {
             <tr>
-                <td>@maintenance.Description</td>
+                <td>@maintenance.SimpleDesc</td>
                 <td>@maintenance.OpenDate.ToString("dd/MM/yyyy")</td>
                 <td>@maintenance.CloseDate.ToString("dd/MM/yyyy")</td>
                 <td>@maintenance.Status</td>

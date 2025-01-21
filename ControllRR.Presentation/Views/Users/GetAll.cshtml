@@ -3,12 +3,6 @@
     ViewData["Title"]="Usuarios do Sistema";
 }
 
-<h2>@ViewData["Title"]</h2>
-
-    <div class="mt-4">
-         <a asp-action="CreateNewUser" class="btn btn-primary">Novo</a>
-       
-    </div>
 <!--<div class="row">
     <div class="col-md-6">
         <form class="form-horizontal" asp-action="FindUserName">
@@ -41,11 +35,17 @@
         @TempData["ErrorMessage"]
     </div>
 }
-     <div class="card mt-4">
-        <div class="card-header">
-         Lista de Usuarios
-     </div>
-
+ <div class="container-fluid px-4">
+    <h1 class="mt-4"></h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+        <li class="breadcrumb-item active">Usuarios</li>
+          <li class="breadcrumb-item active">Principal</li>
+    </ol>
+    <div class="mt-4">
+         <a asp-action="CreateNewUser" class="btn btn-primary">Novo</a>
+       
+    </div>
 
            <div class="card-body">
             <div class="row">

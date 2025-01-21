@@ -2,10 +2,14 @@
 @{
     ViewData["Title"] = "Cadastro de Usuario";
 }
-<h2>@ViewData["Title"]</h2>
-   <div class="mt-4">
-         <a asp-action="Index" class="btn btn-primary">Voltar</a>
-    </div>
+    <div class="container-fluid px-4">
+    <h1 class="mt-4"></h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="/Users/GetAll">Usuarios</a></li>
+          <li class="breadcrumb-item active">Adicionar</li>
+    </ol>
+</div>
 <div class="row">
 <div class="col-md-12">
 <br>

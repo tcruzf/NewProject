@@ -1,19 +1,21 @@
- @model ControllRR.Application.Dto.DeviceDto;
+ @model ControllRR.Application.Dto.SectorDto;
 @{
    
-    ViewData["Title"]="Listagem de Dispositivos";
+    ViewData["Title"]="Consulta de Setores";
 }
 <div class="container-fluid px-4">
     <h1 class="mt-4"></h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-        <li class="breadcrumb-item"><a href="/Devices">Dispositivos</a></li>
+        <li class="breadcrumb-item"><a href="/Sectors/GetAll">Setores</a></li>
           <li class="breadcrumb-item active">Filtrar</li>
     </ol>
 </div>
+
+<div class="container">
     <div class="card">
         <div class="card-header">
-            Data:: -- Consulta de Dispositivos :: Computadores/Tablets/Impressoras ::
+            Data:: -- Setores Disponiveis ::
         </div>
    
 <div class="row">
@@ -24,12 +26,11 @@
         <table id="deviceTable" class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>Tipo</th>
-                    <th>Patrimonio</th>
-                    <th>Modelo</th>
-                     <th>Nº Serie</th>
-                    <th>Setor</th>
-                    <th>Descrição</th>
+                    <th>Nome</th>
+                    <th>Sub Setor</th>
+                    <th>Local</th>
+                    <th>Responsavel</th>
+                      <th>Endereço</th>
                     <th>Ações Disponiveis</th>
                 </tr>
             </thead>
@@ -49,17 +50,16 @@
     processing: true,
     serverSide: true,
     ajax: {
-        url: '/Devices/GetList', // URL do endpoint no backend
+        url: '/Sectors/GetList', // URL do endpoint no backend
         type: 'POST',
         dataType: 'json'
     },
     columns: [
-        { data: 'type', name: 'Type' },
-        { data: 'identifier', name: 'Identifier' },
-        { data: 'model', name: 'Model' },
-        { data: 'serialNumber', name: 'SerialNumber' },
-        { data: 'sector', name: 'Sector' },
-        { data: 'description', name: 'Description' },
+        { data: 'name', name: 'Name' },
+        { data: 'location', name: 'Location' },
+        { data: 'address', name: 'Address' },
+        { data: 'requesterName', name: 'RequesterName' },
+        { data: 'neighborhood', name: 'Neighborhood' },
         { 
             data: null, // Coluna para ações
             orderable: false,

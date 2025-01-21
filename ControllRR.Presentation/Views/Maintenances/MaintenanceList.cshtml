@@ -3,13 +3,16 @@
    
     ViewData["Title"]="Listagem de Manutenções por Dispositivos";
 }
-<div class="mt-4">
-         <a asp-action="Index" class="btn btn-primary">Voltar</a>
-    </div>
+<div class="container-fluid px-4">
+    <h1 class="mt-4"></h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="/Maintenances/MaintenanceList">Manutenções</a></li>
+          <li class="breadcrumb-item active">Filtrar</li>
+    </ol>
+</div>
     <hr>
 <div class="container">
-    <h2 class="my-4">@ViewData["Title"]</h2>
- 
     <div class="card">
         <div class="card-header">
             Data:: -- Consulta Manutenções por Dispositivos / Computadores / Impressoras / Tablets

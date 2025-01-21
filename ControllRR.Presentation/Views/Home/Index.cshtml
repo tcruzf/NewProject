@@ -1,12 +1,12 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Gerencia de Manutenções";
 }
  <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+  <title>Dashboard/Home</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -82,18 +82,24 @@
   </style>
 </head>
 <body>
-
-  <h1 style="text-align: center; margin: 20px 0;">Dashboard</h1>
+<div class="container-fluid px-4">
+    <h1 class="mt-4"></h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+        <li class="breadcrumb-item active">Principal</li>
+    </ol>
+</div>
+  <h1 style="text-align: center; margin: 20px 0;"></h1>
 
   <div class="dashboard">
     <div class="card bg-info">
       <h3>451</h3>
       <p>Dispositivos</p>
-      <a href="#">Exibir tudo</a>
+      <a href="/Devices">Exibir tudo</a>
       <div class="icon"></div>
     </div>
 
-    <div class="card bg-success">
+    <div class="card bg-primary">
       <h3>53<sup>%</sup></h3>
       <p>Memória Livre</p>
       <a href="#">Ver carga servidor</a>
@@ -102,15 +108,15 @@
 
     <div class="card bg-warning">
       <h3>44</h3>
-      <p>Conexão/Desconexão</p>
-      <a href="#">Ver acessos</a>
+      <p>Atendimentos externos</p>
+      <a href="#">Ver atendimentos</a>
       <div class="icon">📣</div>
     </div>
 
     <div class="card bg-danger">
       <h3>65</h3>
-      <p>Faturas Vencendo Hoje</p>
-      <a href="#">Ver Débitos</a>
+      <p>Manutenções abertas</p>
+      <a href="#">Ver Todas</a>
       <div class="icon">💰</div>
     </div>
   </div>
