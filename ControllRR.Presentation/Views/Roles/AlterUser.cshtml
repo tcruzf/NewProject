@@ -1,4 +1,5 @@
-@model ControllRR.Application.Dto.UserDto
+@using ControllRR.Domain.Enums
+@model ControllRR.Application.Dto.ApplicationUserDto
 @{
     ViewData["Title"] = "Cadastro de Usuario";
 }
@@ -46,6 +47,10 @@
     <input asp-for="Register" class="form-control input-sm" />
     <span asp-validation-for="Register" class="text-danger"></span>
     </div> 
+     <div class="col">
+     <label asp-for="Role" class="control-label"></label>
+    <select asp-for="Role" class="form-control" asp-items="@Html.GetEnumSelectList<ApplicationUserRoles>()"></select>
+    </div
     </div>
     <div class="mt-4">
     <button type="submit" class="btn btn-primary">Salvar</button>

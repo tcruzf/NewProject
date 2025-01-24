@@ -4,18 +4,21 @@ using ControllRR.Domain.Entities;
 using ControllRR.Domain.Interfaces;
 using ControllRR.Application.Dto;
 using ControllRR.Application.Exceptions;
+using Microsoft.AspNetCore.Identity;
 
 namespace ControllRR.Application.Services;
 
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
+    private readonly UserManager<IdentityUser> _userManager;
     private readonly IMapper _mapper;
 
-    public UserService(IUserRepository userRepository, IMapper mapper)
+    public UserService(IUserRepository userRepository, IMapper mapper, UserManager<IdentityUser> userManager)
     {
         _userRepository = userRepository;
         _mapper = mapper;
+        _userManager = userManager;
     }
     public async Task<List<UserDto>> FindAllAsync()
     {
@@ -58,6 +61,18 @@ public class UserService : IUserService
 
       // await _userRepository.SaveChangesAsync();
 
+    }
+
+    public async Task<bool> AddUserRoleAsync(string email, string role)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user == null)
+        {
+            return false; // Usuário não encontrado
+        }
+
+        var result = await _userManager.AddToRoleAsync(user, role);
+        return result.Succeeded;
     }
 
 }

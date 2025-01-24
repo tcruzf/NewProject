@@ -30,12 +30,13 @@ public class MaintenancesController : Controller
 
     }
 
+    [Authorize(Roles = "Manager, Admin")]
     public async Task<IActionResult> Index()
     {
         var obj = await _maintenanceService.FindAllAsync();
         return View(obj);
     }
-
+    [Authorize(Roles = "Manager, Admin")]
     public async Task<IActionResult> Details(int id)
     {
         // PAREI AQUI var obj = new MaintenanceViewModel { Maintenance = }
@@ -51,6 +52,7 @@ public class MaintenancesController : Controller
         return View(list);
 
     }
+    [Authorize(Roles = "Manager, Admin")]
     [HttpGet]
     public async Task<IActionResult> New()
     {
@@ -81,7 +83,7 @@ public class MaintenancesController : Controller
         return View(viewModel);
 
     }
-
+    [Authorize(Roles = "Manager, Admin")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> New(MaintenanceDto maintenanceDto)
@@ -111,12 +113,13 @@ public class MaintenancesController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-
+    [Authorize(Roles = "Manager, Admin")]
     [HttpGet]
     public async Task<IActionResult> MaintenanceList()
     {
         return View();
     }
+    [Authorize]
     [HttpPost]
     public async Task<JsonResult> AllMaintenances()//
     {
@@ -133,6 +136,7 @@ public class MaintenancesController : Controller
         return Json(result);
     } // Fim do método
 
+    [Authorize(Roles = "Manager, Admin")]
     [HttpGet]
     public async Task<IActionResult> ChangeMaintenance(int? id)
     {
@@ -153,7 +157,7 @@ public class MaintenancesController : Controller
         MaintenanceViewModel viewModel = new MaintenanceViewModel { UserDto = userDto, MaintenanceDto = maintenance };
         return View(viewModel);
     }
-
+    [Authorize(Roles = "Manager, Admin")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ChangeMaintenance(int? id, MaintenanceDto maintenanceDto)
@@ -186,7 +190,7 @@ public class MaintenancesController : Controller
 
     }
 
-
+    [Authorize(Roles = "Manager, Admin")]
     public async Task<IActionResult> Print(int id)
     {
         var list = await _maintenanceService.FindByIdAsync(id);
@@ -202,6 +206,7 @@ public class MaintenancesController : Controller
         return View(list);
     }
 
+    [Authorize(Roles = "Manager, Admin")]
     public async Task<IActionResult> Finalize(int id)
     {
         try
@@ -220,7 +225,7 @@ public class MaintenancesController : Controller
             return RedirectToAction(nameof(Error), new { e.Message });
         }
     }
-
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         try

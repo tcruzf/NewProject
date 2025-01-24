@@ -32,7 +32,10 @@
  <div class="mt-4">
         <form asp-action="Delete">
         <input type="hidden" asp-for="Id"/>
+        @if (User.IsInRole("Admin"))
+        {
         <input type="submit" class="btn btn-danger" value="Delete">
+        }
         <a asp-action="Index" class="btn btn-primary">Voltar</a>
         <a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model.Id">Editar</a>
     </form>

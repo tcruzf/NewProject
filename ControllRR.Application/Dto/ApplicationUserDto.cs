@@ -1,10 +1,9 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Identity;
+using ControllRR.Domain.Entities;
 
-namespace ControllRR.Domain.Entities;
+namespace ControllRR.Application.Dto;
 
-public class ApplicationUser : IdentityUser
-
+public class ApplicationUserDto
 {
     public int Id { get; set; }
     [Display(Name = "Nome")]
@@ -19,23 +18,7 @@ public class ApplicationUser : IdentityUser
     public double Register { get; set; }
     public ICollection<Maintenance>? Maintenances { get; set; }
 
-    public string? Role { get; set; }
+     public string? Role { get; set; }
 
 
-
-    public ApplicationUser()
-    {
-
-    }
-
-    public ApplicationUser(int id, string name, string phone, double register, string role)
-    {
-        Id = id;
-        Name = name;
-        Phone = phone;
-        Register = register;
-        Role = role;
-        // Department = department;
-
-    }
 }

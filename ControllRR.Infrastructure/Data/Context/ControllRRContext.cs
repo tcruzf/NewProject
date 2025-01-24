@@ -44,4 +44,6 @@ namespace ControllRR.Infrastructure.Data.Context;
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+        
     }

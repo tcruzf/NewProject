@@ -1,4 +1,7 @@
- @model ControllRR.Domain.Entities.Maintenance;
+@model ControllRR.Domain.Entities.Maintenance;
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<IdentityUser> SignInManager
 @{
    
     ViewData["Title"]="Listagem de Manutenções por Dispositivos";

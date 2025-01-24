@@ -83,6 +83,9 @@ namespace ControllRR.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<DateTime>("CloseDate")
                         .HasColumnType("datetime(6)");
 
@@ -110,6 +113,8 @@ namespace ControllRR.Infrastructure.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("DeviceId");
 
@@ -403,8 +408,21 @@ namespace ControllRR.Infrastructure.Data.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<int>("Register")
-                        .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<double>("Register")
+                        .HasColumnType("double");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("longtext");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
@@ -422,6 +440,10 @@ namespace ControllRR.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("ControllRR.Domain.Entities.Maintenance", b =>
                 {
+                    b.HasOne("ControllRR.Domain.Entities.ApplicationUser", null)
+                        .WithMany("Maintenances")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("ControllRR.Domain.Entities.Device", "Device")
                         .WithMany("Maintenances")
                         .HasForeignKey("DeviceId")
@@ -501,6 +523,11 @@ namespace ControllRR.Infrastructure.Data.Migrations
                 });
 
             modelBuilder.Entity("ControllRR.Domain.Entities.User", b =>
+                {
+                    b.Navigation("Maintenances");
+                });
+
+            modelBuilder.Entity("ControllRR.Domain.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("Maintenances");
                 });

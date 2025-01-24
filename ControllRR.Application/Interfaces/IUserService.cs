@@ -8,5 +8,6 @@ public interface IUserService
     Task<UserDto> FindByIdAsync(int id);
     Task InsertAsync(UserDto user);
     Task RemoveAsync(int id);
+    Task<bool> AddUserRoleAsync(string email, string role);
     
 }

@@ -1,8 +1,12 @@
+ @using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<IdentityUser> SignInManager
 @model ControllRR.Presentation.ViewModels.MaintenanceViewModel;
  @using ControllRR.Domain.Enums
 @{
     ViewData["Title"] = "Criar nova Manutenção";
 }
+
 <div class="container-fluid px-4">
     <h1 class="mt-4"></h1>
     <ol class="breadcrumb mb-4">

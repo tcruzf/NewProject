@@ -86,6 +86,28 @@ public class UsersController : Controller
 
     }
 
+    [HttpPost]
+    public async Task<IActionResult> AddRole(string email, string role)
+    {
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(role))
+        {
+            return BadRequest("Email e role são obrigatórios.");
+        }
+
+        var result = await _userService.AddUserRoleAsync(email, role);
+        if (result)
+        {
+            return Ok($"Role '{role}' adicionada ao usuário '{email}' com sucesso.");
+        }
+
+        return NotFound("Usuário não encontrado ou erro ao adicionar role.");
+    }
+
+    public async Task<IActionResult> Test()
+    {
+        return View();
+    }
+
     public async Task<IActionResult> Error(string message)
     {
         var viewModel = new ErrorViewModel

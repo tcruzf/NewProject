@@ -21,15 +21,17 @@ builder.Services.AddEntityFrameworkMySQL()
     });
 
 // Configurar o Identity
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ControllRRContext>()
     .AddDefaultTokenProviders()
     .AddDefaultUI();
+
 // Configurar AutoMapper
 builder.Services.AddAutoMapper(typeof(MaintenanceMappingProfile));
 builder.Services.AddAutoMapper(typeof(DeviceMappingProfile));
 builder.Services.AddAutoMapper(typeof(SectorMappingProfile));
 builder.Services.AddAutoMapper(typeof(DocumentMappingProfile));
+builder.Services.AddAutoMapper(typeof(ApplicationUserMappingProfile));
 
 // Registrar serviços
 builder.Services.AddScoped<IUserService, UserService>();
@@ -43,6 +45,15 @@ builder.Services.AddScoped<IDocumentService, DocumentService>();
 builder.Services.AddScoped<IFileStorageService, FileStorageService>();
 builder.Services.AddScoped<ISectorService, SectorService>();
 builder.Services.AddScoped<ISectorRepository, SectorRepository>();
+builder.Services.AddScoped<IApplicationUserService, ApplicationUserService>();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("Manager", policy => policy.RequireRole("Manager"));
+    options.AddPolicy("Member", policy => policy.RequireRole("Member"));
+    options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("RequireUserRole", policy => policy.RequireRole("User"));
+});
 
 // Adicionar suporte ao MVC e Razor Pages
 builder.Services.AddControllersWithViews();
@@ -53,6 +64,18 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     SeedingService.Initialize(services);
+    SeedUser.InitializeAsync(services);
+   
+  var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var roles = new[] { "Admin", "Manager", "Member" };
+
+    foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+        {
+            await roleManager.CreateAsync(new IdentityRole(role));
+        }
+    }
 }
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

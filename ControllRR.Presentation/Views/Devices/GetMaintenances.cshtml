@@ -1,3 +1,8 @@
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<IdentityUser> SignInManager
+
 @model ControllRR.Application.Dto.DeviceDto;
 @{
     ViewData["Title"]="Lista de ordem de serviço por equipamentos";
@@ -48,7 +53,10 @@
                 <td>
                     <a asp-controller="Maintenances" asp-action="ChangeMaintenance" class="btn btn-success" asp-route-id="@maintenance.Id">Editar</a>
                     <a asp-controller="Maintenances" asp-action="Details" class="btn btn-primary" asp-route-id="@maintenance.Id">Detailhes</a>
+                    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
                     <a asp-controller="Maintenances" asp-action="Delete" class="btn btn-danger" asp-route-id="@maintenance.Id">Deletar</a>
+                    }
             </td>
             </tr>
         }
