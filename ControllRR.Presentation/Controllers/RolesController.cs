@@ -1,5 +1,6 @@
 using ControllRR.Application.Dto;
 using ControllRR.Application.Interfaces;
+using ControllRR.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ControllRR.Presentation.Controllers;
@@ -7,10 +8,12 @@ namespace ControllRR.Presentation.Controllers;
 public class RolesController : Controller
 {
     private readonly IApplicationUserService _applicationUserService;
+    private readonly IUserService _userService;
 
-    public RolesController(IApplicationUserService applicationUserService)
+    public RolesController(IApplicationUserService applicationUserService, IUserService userService)
     {
         _applicationUserService = applicationUserService;
+        _userService = userService;
     }
 
    public async Task<IActionResult> ListUser()

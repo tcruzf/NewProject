@@ -21,7 +21,7 @@ builder.Services.AddEntityFrameworkMySQL()
     });
 
 // Configurar o Identity
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ControllRRContext>()
     .AddDefaultTokenProviders()
     .AddDefaultUI();
